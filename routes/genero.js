@@ -39,7 +39,7 @@ router.post('/', [
 });
 
 // Editar un género existente
-router.put('/:id', [
+router.put('/:generoid', [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo'])
 ], async (req, res) => {

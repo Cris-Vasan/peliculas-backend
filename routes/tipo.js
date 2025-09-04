@@ -37,7 +37,7 @@ router.post('/', [
 });
 
 // Editar un tipo existente
-router.put('/:id', [
+router.put('/:tipoid', [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty()
 ], async (req, res) => {
 	const errors = validationResult(req);

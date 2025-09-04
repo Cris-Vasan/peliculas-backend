@@ -41,7 +41,7 @@ router.post('/', [
 });
 
 // Editar una productora existente
-router.put('/:id', [
+router.put('/:productoraid', [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo'])
 ], async (req, res) => {
