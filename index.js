@@ -14,6 +14,10 @@ getConection();
 
 
 app.use('/api/directores', require('./routes/Director'));
+app.use('/api/generos', require('./routes/Genero'));
+app.use('/api/tipos', require('./routes/Tipo'));
+app.use('/api/productoras', require('./routes/Productora'));
+app.use('/api/medias', require('./routes/Media'));
 
 
 
