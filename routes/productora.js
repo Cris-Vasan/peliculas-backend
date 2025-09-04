@@ -50,9 +50,9 @@ router.put('/:productoraid', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 	try {
-		const { id } = req.params;
+		const { productoraid } = req.params;
 		// Obtener la productora actual
-		const productoraActual = await Productora.findById(id);
+		const productoraActual = await Productora.findById(productoraid);
 		if (!productoraActual) {
 			return res.status(404).json({ error: 'Productora no encontrada' });
 		}
@@ -60,7 +60,7 @@ router.put('/:productoraid', [
 		const nuevoSlogan = req.body.slogan !== undefined ? req.body.slogan : productoraActual.slogan;
 		const nuevaDescripcion = req.body.descripcion !== undefined ? req.body.descripcion : productoraActual.descripcion;
 		const productora = await Productora.findByIdAndUpdate(
-			id,
+			productoraid,
 			{
 				nombre: req.body.nombre,
 				estado: req.body.estado,

@@ -45,16 +45,16 @@ router.put('/:tipoid', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 	try {
-		const { id } = req.params;
+		const { tipoid } = req.params;
 		// Obtener el tipo actual
-		const tipoActual = await Tipo.findById(id);
+		const tipoActual = await Tipo.findById(tipoid);
 		if (!tipoActual) {
 			return res.status(404).json({ error: 'Tipo no encontrado' });
 		}
 		// Si no se envía descripcion, conservar la anterior
 		const nuevaDescripcion = req.body.descripcion !== undefined ? req.body.descripcion : tipoActual.descripcion;
 		const tipo = await Tipo.findByIdAndUpdate(
-			id,
+			tipoid,
 			{
 				nombre: req.body.nombre,
 				descripcion: nuevaDescripcion,

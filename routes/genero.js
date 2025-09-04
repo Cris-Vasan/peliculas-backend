@@ -48,16 +48,16 @@ router.put('/:generoid', [
 		return res.status(400).json({ errors: errors.array() });
 	}
 	try {
-		const { id } = req.params;
+		const { generoid } = req.params;
 		// Obtener el género actual
-		const generoActual = await Genero.findById(id);
+		const generoActual = await Genero.findById(generoid);
 		if (!generoActual) {
 			return res.status(404).json({ error: 'Género no encontrado' });
 		}
 		// Si no se envía descripción, conservar la anterior
 		const nuevaDescripcion = req.body.descripcion !== undefined ? req.body.descripcion : generoActual.descripcion;
 		const genero = await Genero.findByIdAndUpdate(
-			id,
+			generoid,
 			{
 				nombre: req.body.nombre,
 				estado: req.body.estado,
