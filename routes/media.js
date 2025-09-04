@@ -1,27 +1,19 @@
 const { Router } = require('express');
 const Media = require('../models/Media');
 const { validationResult, check } = require('express-validator');
+const { validarMedia } = require('../Helpers/validar-media');
 
 const router = Router();
 
 // Obtener todas las producciones
 router.get('/', async (req, res) => {
 	try {
-		const medias = await (await Media.find()).populate([
-            {
-                path: 'genero', select: 'nombre estado descripcion'
-            },
-            {
-                path: 'director', select: 'nombres estado'
-            },
-            {
-                path: 'productora', select: 'nombre estado slogan descripcion'
-            },
-            {
-                path: 'tipo', select: 'nombre estado descripcion'
-            }
-        ]);
-		res.send(medias);
+        const medias = await Media.find()
+            .populate({ path: 'genero', select: 'nombre estado descripcion' })
+            .populate({ path: 'director', select: 'nombres estado' })
+            .populate({ path: 'productora', select: 'nombre estado slogan descripcion' })
+            .populate({ path: 'tipo', select: 'nombre estado descripcion' });
+        res.send(medias);
 	} catch (error) {
         console.log(error);
 		res.status(500).send("Ocurrio un error al consultar las producciones");
