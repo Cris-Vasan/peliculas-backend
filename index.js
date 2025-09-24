@@ -8,16 +8,20 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 
+app.use(cors({
+    origin: 'http://localhost:3000'
+}));
+
 app.use(express.json());
 
 getConection();
 
 
-app.use('/api/directores', require('./routes/Director'));
-app.use('/api/generos', require('./routes/Genero'));
-app.use('/api/tipos', require('./routes/Tipo'));
-app.use('/api/productoras', require('./routes/Productora'));
-app.use('/api/medias', require('./routes/Media'));
+app.use('/api/directores', require('./routes/director'));
+app.use('/api/generos', require('./routes/genero'));
+app.use('/api/tipos', require('./routes/tipo'));
+app.use('/api/productoras', require('./routes/productora'));
+app.use('/api/medias', require('./routes/media'));
 
 
 
