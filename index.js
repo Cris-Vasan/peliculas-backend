@@ -6,8 +6,16 @@ require('dotenv').config();
 const app = express()
 const port = process.env.PORT || 4000;
 
+// Configuración CORS para producción
+const allowedOrigins = process.env.FRONTEND_URL 
+    ? [process.env.FRONTEND_URL]
+    : ['https://tu-app.netlify.app']; // URL por defecto
+
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://tu-frontend.vercel.app']
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());
