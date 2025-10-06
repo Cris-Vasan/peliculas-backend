@@ -1,21 +1,18 @@
 const express = require('express')
-const { getConection } = require('./db/connect-mongo-ds');6
+const { getConection } = require('./db/connect-mongo-ds');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express()
 const port = process.env.PORT || 4000;
 
-app.use(cors());
-
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: ['http://localhost:3000', 'https://tu-frontend.vercel.app']
 }));
 
 app.use(express.json());
 
 getConection();
-
 
 app.use('/api/directores', require('./routes/director'));
 app.use('/api/generos', require('./routes/genero'));
