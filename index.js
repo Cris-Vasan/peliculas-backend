@@ -9,7 +9,7 @@ const port = process.env.PORT || 4000;
 // Configuración CORS para producción
 const allowedOrigins = process.env.FRONTEND_URL 
     ? [process.env.FRONTEND_URL]
-    : ['https://tu-app.netlify.app']; // URL por defecto
+    : ['https://68e325380f87861e122f727c--cineiudcol.netlify.app']; 
 
 app.use(cors({
     origin: allowedOrigins,
