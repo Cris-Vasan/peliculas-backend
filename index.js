@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express()
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 4000;
 
 // Configuración CORS para producción
 const allowedOrigins = process.env.FRONTEND_URL 
