@@ -22,6 +22,11 @@ app.use(express.json());
 
 getConection();
 
+// Rutas de autenticación
+app.use('/api/auth', require('./routes/Auth'));
+
+// Rutas protegidas
+app.use('/api/usuarios', require('./routes/usuario'));
 app.use('/api/directores', require('./routes/director'));
 app.use('/api/generos', require('./routes/genero'));
 app.use('/api/tipos', require('./routes/tipo'));

@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const Genero = require('../models/Genero');
 const { validationResult, check } = require('express-validator');
+const { auth, requireAdmin, requireDocenteOrAdmin } = require('../middleware/auth');
 
 const router = Router();
 
-// Obtener todos los géneros
-router.get('/', async (req, res) => {
+// Obtener todos los géneros (Admin y Docente)
+router.get('/', auth, requireDocenteOrAdmin, async (req, res) => {
 	try {
 		const generos = await Genero.find();
 		res.json(generos);
@@ -14,8 +15,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// Registrar un nuevo género
-router.post('/', [
+// Registrar un nuevo género (Solo Admin)
+router.post('/', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo']),
 	check('descripcion', 'La descripcion es obligatoria').not().isEmpty()
@@ -38,8 +39,8 @@ router.post('/', [
 	}
 });
 
-// Editar un género existente
-router.put('/:generoid', [
+// Editar un género existente (Solo Admin)
+router.put('/:generoid', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo'])
 ], async (req, res) => {

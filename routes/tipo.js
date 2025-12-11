@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const Tipo = require('../models/Tipo');
 const { validationResult, check } = require('express-validator');
+const { auth, requireAdmin, requireDocenteOrAdmin } = require('../middleware/auth');
 
 const router = Router();
 
-// Obtener todos los tipos
-router.get('/', async (req, res) => {
+// Obtener todos los tipos (Admin y Docente)
+router.get('/', auth, requireDocenteOrAdmin, async (req, res) => {
 	try {
 		const tipos = await Tipo.find();
 		res.json(tipos);
@@ -14,8 +15,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// Registrar un nuevo tipo
-router.post('/', [
+// Registrar un nuevo tipo (Solo Admin)
+router.post('/', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('descripcion', 'La descripcion es obligatoria').not().isEmpty()
 ], async (req, res) => {
@@ -36,8 +37,8 @@ router.post('/', [
 	}
 });
 
-// Editar un tipo existente
-router.put('/:tipoid', [
+// Editar un tipo existente (Solo Admin)
+router.put('/:tipoid', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty()
 ], async (req, res) => {
 	const errors = validationResult(req);

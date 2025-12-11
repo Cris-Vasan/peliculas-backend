@@ -2,11 +2,12 @@ const { Router } = require('express');
 const Media = require('../models/Media');
 const { validationResult, check } = require('express-validator');
 const { validarMedia } = require('../Helpers/validar-media');
+const { auth, requireAdmin, requireDocenteOrAdmin } = require('../middleware/auth');
 
 const router = Router();
 
-// Obtener todas las producciones
-router.get('/', async (req, res) => {
+// Obtener todas las producciones (Admin y Docente pueden listar)
+router.get('/', auth, requireDocenteOrAdmin, async (req, res) => {
 	try {
         const medias = await Media.find()
             .populate({ path: 'genero', select: 'nombre estado descripcion' })
@@ -20,8 +21,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// Registrar una nueva producción
-router.post('/', async function (req, res) {
+// Registrar una nueva producción (solo Admin)
+router.post('/', auth, requireAdmin, async function (req, res) {
     try {
     const validaciones = validarMedia(req);
 
@@ -59,8 +60,8 @@ router.post('/', async function (req, res) {
 	}
 });
 
-// Editar una producción existente
-router.put('/:mediaid', async function (req, res) {
+// Editar una producción existente (solo Admin)
+router.put('/:mediaid', auth, requireAdmin, async function (req, res) {
     try {
         let inventario = await Media.findById(req.params.mediaid);
         if (!inventario) {

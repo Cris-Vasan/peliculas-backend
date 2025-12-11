@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const Productora = require('../models/Productora');
 const { validationResult, check } = require('express-validator');
+const { auth, requireAdmin, requireDocenteOrAdmin } = require('../middleware/auth');
 
 const router = Router();
 
-// Obtener todas las productoras
-router.get('/', async (req, res) => {
+// Obtener todas las productoras (Admin y Docente)
+router.get('/', auth, requireDocenteOrAdmin, async (req, res) => {
 	try {
 		const productoras = await Productora.find();
 		res.json(productoras);
@@ -14,8 +15,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
-// Registrar una nueva productora
-router.post('/', [
+// Registrar una nueva productora (Solo Admin)
+router.post('/', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo']),
 	check('slogan', 'El slogan es obligatorio').not().isEmpty(),
@@ -40,8 +41,8 @@ router.post('/', [
 	}
 });
 
-// Editar una productora existente
-router.put('/:productoraid', [
+// Editar una productora existente (Solo Admin)
+router.put('/:productoraid', auth, requireAdmin, [
 	check('nombre', 'El nombre es obligatorio').not().isEmpty(),
 	check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo'])
 ], async (req, res) => {

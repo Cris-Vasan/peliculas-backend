@@ -1,11 +1,12 @@
 const { Router } = require('express');
 const Director = require('../models/Director');
 const { validationResult, check } = require('express-validator');
+const { auth, requireAdmin, requireDocenteOrAdmin } = require('../middleware/auth');
 
 const router = Router();
 
-//obtener todos los directores
-router.get('/', async (req, res) => {
+// Obtener todos los directores (Admin y Docente)
+router.get('/', auth, requireDocenteOrAdmin, async (req, res) => {
     try {
         const directores = await Director.find();
         res.json(directores);
@@ -14,10 +15,12 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Registrar un nuevo director 
+// Registrar un nuevo director (solo Admin)
 router.post('/', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
     check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo']),
+    auth,
+    requireAdmin
 ], 
 async (req, res) => {
     const errors = validationResult(req);
@@ -40,11 +43,12 @@ async (req, res) => {
     }
 });
 
-// Editar un director existente
-
+// Editar un director existente (solo Admin)
 router.put('/:directorId', [
     check('nombres', 'El nombre es obligatorio').not().isEmpty(),
     check('estado', 'El estado es obligatorio').isIn(['Activo', 'Inactivo']),
+    auth,
+    requireAdmin
 ], 
 async (req, res) => {
     try {
